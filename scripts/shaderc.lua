@@ -640,4 +640,92 @@ project "shaderc"
 
 	strip()
 
+project "shaderc_shared"
+	kind "SharedLib"
+
+	defines {
+		"SHADERC_LIBRARY=1",
+		"BGFX_SHADERC_SHARED_LIBRARY",
+	}
+
+	targetname "shaderc_shared"
+
+	includedirs {
+		path.join(BIMG_DIR, "include"),
+		path.join(BGFX_DIR, "include"),
+
+		path.join(BGFX_DIR, "3rdparty/dxsdk/include"),
+
+		FCPP_DIR,
+
+		path.join(BGFX_DIR, "3rdparty/glslang/glslang/Public"),
+		path.join(BGFX_DIR, "3rdparty/glslang/glslang/Include"),
+		path.join(BGFX_DIR, "3rdparty/glslang"),
+
+		path.join(GLSL_OPTIMIZER, "include"),
+		path.join(GLSL_OPTIMIZER, "src/glsl"),
+
+		SPIRV_CROSS,
+
+		path.join(SPIRV_TOOLS, "include"),
+	}
+
+	links {
+		"fcpp",
+		"glslang",
+		"glsl-optimizer",
+		"spirv-opt",
+		"spirv-cross",
+	}
+
+	using_bx()
+
+	files {
+		path.join(BGFX_DIR, "tools/shaderc/**.cpp"),
+		path.join(BGFX_DIR, "tools/shaderc/**.h"),
+		path.join(BGFX_DIR, "src/vertexlayout.**"),
+		path.join(BGFX_DIR, "src/shader**"),
+	}
+
+	configuration { "mingw-*" }
+		targetextension ".dll"
+
+	configuration { "osx*" }
+		links {
+		        "Cocoa.framework",
+		}
+
+	configuration { "vs*" }
+		includedirs {
+		        path.join(GLSL_OPTIMIZER, "include/c99"),
+		}
+
+	configuration { "vs20* or mingw*" }
+		links {
+		        "psapi",
+		}
+
+	configuration { "osx* or linux*" }
+		links {
+		        "pthread",
+		}
+
+	configuration {}
+
+	if filesexist(BGFX_DIR, path.join(BGFX_DIR, "../bgfx-gnm"), {
+		path.join(BGFX_DIR, "scripts/shaderc.lua"), }) then
+
+		if filesexist(BGFX_DIR, path.join(BGFX_DIR, "../bgfx-gnm"), {
+		        path.join(BGFX_DIR, "tools/shaderc/shaderc_pssl.cpp"), }) then
+
+		        removefiles {
+		                path.join(BGFX_DIR, "tools/shaderc/shaderc_pssl.cpp"),
+		        }
+		end
+
+		dofile(path.join(BGFX_DIR, "../bgfx-gnm/scripts/shaderc.lua") )
+	end
+
+	strip()
+
 group "tools"

@@ -3,6 +3,10 @@
  * License: https://github.com/bkaradzic/bgfx/blob/master/LICENSE
  */
 
+#ifndef SHADERC_LIBRARY
+#       define SHADERC_LIBRARY 0
+#endif // SHADERC_LIBRARY
+
 #include "shaderc.h"
 #include <bx/commandline.h>
 #include <bx/filepath.h>
@@ -2929,7 +2933,9 @@ namespace bgfx
 
 } // namespace bgfx
 
+#if !SHADERC_LIBRARY
 int main(int _argc, const char* _argv[])
 {
-	return bgfx::compileShader(_argc, _argv);
+        return bgfx::compileShader(_argc, _argv);
 }
+#endif // !SHADERC_LIBRARY
