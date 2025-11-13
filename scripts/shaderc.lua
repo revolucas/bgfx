@@ -114,6 +114,11 @@ project "spirv-opt"
 			"-Wno-misleading-indentation",
 		}
 
+	configuration { "linux* or osx*" }
+		buildoptions {
+			"-fPIC",
+		}
+
 	configuration {}
 
 project "spirv-cross"
@@ -163,6 +168,11 @@ project "spirv-cross"
 	configuration { "mingw* or linux* or osx*" }
 		buildoptions {
 			"-Wno-type-limits",
+		}
+
+	configuration { "linux* or osx*" }
+		buildoptions {
+			"-fPIC",
 		}
 
 	configuration {}
@@ -260,6 +270,11 @@ project "glslang"
 	configuration { "linux-gcc-*" }
 		buildoptions {
 			"-Wno-unused-but-set-variable",
+		}
+
+	configuration { "linux* or osx*" }
+		buildoptions {
+			"-fPIC",
 		}
 
 	configuration {}
@@ -517,6 +532,11 @@ project "glsl-optimizer"
 			"-Wno-misleading-indentation",
 		}
 
+	configuration { "linux* or osx*" }
+		buildoptions {
+			"-fPIC",
+		}
+
 	configuration {}
 
 project "fcpp"
@@ -555,6 +575,11 @@ project "fcpp"
 			"-Wno-implicit-fallthrough",
 			"-Wno-incompatible-pointer-types",
 			"-Wno-parentheses-equality",
+		}
+
+	configuration { "linux* or osx*" }
+		buildoptions {
+			"-fPIC",
 		}
 
 	configuration {}
@@ -620,6 +645,11 @@ project "shaderc"
 	configuration { "osx* or linux*" }
 		links {
 			"pthread",
+		}
+
+	configuration { "linux* or osx*" }
+		buildoptions {
+			"-fPIC",
 		}
 
 	configuration {}
@@ -708,6 +738,11 @@ project "shaderc_shared"
 	configuration { "osx* or linux*" }
 		links {
 		        "pthread",
+		}
+
+	configuration { "linux* or osx*" }
+		buildoptions {
+			"-fPIC",
 		}
 
 	configuration {}
