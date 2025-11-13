@@ -239,11 +239,10 @@ int bgfx_shaderc_compile(
                 return BGFX_SHADERC_RESULT_INVALID_ARGUMENT;
         }
 
-        std::vector<char> shaderData;
-        shaderData.reserve(shaderSize + 2);
-        shaderData.insert(shaderData.end(), _shader_source, _shader_source + shaderSize);
-        shaderData.push_back('\n');
-        shaderData.push_back('\0');
+        char* shaderData = new char[shaderSize + 2];
+        std::memcpy(shaderData, _shader_source, shaderSize);
+        shaderData[shaderSize]     = '\n';
+        shaderData[shaderSize + 1] = '\0';
 
         std::string varying;
         const char* varyingPtr = NULL;
@@ -272,7 +271,7 @@ int bgfx_shaderc_compile(
         bool compiled = bgfx::compileShader(
                   varyingPtr
                 , ""
-                , shaderData.data()
+                , shaderData
                 , shaderSize
                 , options
                 , &shaderWriter
@@ -280,7 +279,10 @@ int bgfx_shaderc_compile(
 
         if (NULL != _output)
         {
-                assignBuffer(_output, outputData.empty() ? NULL : outputData.data(), outputData.size(), false);
+                assignBuffer(_output,
+                             outputData.empty() ? NULL : outputData.data(),
+                             outputData.size(),
+                             false);
         }
 
         if (NULL != _messages)
